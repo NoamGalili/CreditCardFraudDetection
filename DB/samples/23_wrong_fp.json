@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 371822,
+    "trans_date_trans_time": "2020-11-12 23:54:49",
+    "cc_num": 2576709887791552,
+    "merchant": "fraud_Bahringer Group",
+    "category": "health_fitness",
+    "amt": 70.25,
+    "first": "Joseph",
+    "last": "Morgan",
+    "gender": "M",
+    "street": "126 Underwood Drive",
+    "city": "San Diego",
+    "state": "CA",
+    "zip": 92128,
+    "lat": 33.0067,
+    "long": -117.069,
+    "city_pop": 1241364,
+    "job": "Chartered public finance accountant",
+    "dob": "1959-08-05",
+    "trans_num": "7e3cf3625d7168483e14bc6a5e786110",
+    "unix_time": 1384300489,
+    "merch_lat": 32.535312,
+    "merch_long": -117.051089,
+    "is_fraud": 0
+  }
+]

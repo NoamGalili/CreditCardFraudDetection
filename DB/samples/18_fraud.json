@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 142143,
+    "trans_date_trans_time": "2020-08-10 03:41:31",
+    "cc_num": 30238755902988,
+    "merchant": "fraud_Cummerata-Jones",
+    "category": "gas_transport",
+    "amt": 11.17,
+    "first": "Danielle",
+    "last": "Yu",
+    "gender": "F",
+    "street": "5395 Colon Burgs Suite 037",
+    "city": "Thrall",
+    "state": "TX",
+    "zip": 76578,
+    "lat": 30.592,
+    "long": -97.2893,
+    "city_pop": 1766,
+    "job": "Press sub",
+    "dob": "1976-01-02",
+    "trans_num": "17afa1e98c9f427f4c4c7bfc0654f248",
+    "unix_time": 1376106091,
+    "merch_lat": 30.611255,
+    "merch_long": -98.145016,
+    "is_fraud": 1
+  }
+]

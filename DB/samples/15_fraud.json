@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 189565,
+    "trans_date_trans_time": "2020-08-26 12:21:40",
+    "cc_num": 583699482621,
+    "merchant": "fraud_Block-Parisian",
+    "category": "misc_net",
+    "amt": 781.31,
+    "first": "Jennifer",
+    "last": "Jones",
+    "gender": "F",
+    "street": "5572 Kelly Plains Apt. 952",
+    "city": "Waupaca",
+    "state": "WI",
+    "zip": 54981,
+    "lat": 44.3481,
+    "long": -89.1101,
+    "city_pop": 15426,
+    "job": "Engineer, civil (contracting)",
+    "dob": "1936-07-22",
+    "trans_num": "2d56f1573e69b6e4f0b8b1e3902c77a7",
+    "unix_time": 1377519700,
+    "merch_lat": 44.021869,
+    "merch_long": -89.60735799999999,
+    "is_fraud": 1
+  }
+]

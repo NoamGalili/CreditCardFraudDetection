@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 133943,
+    "trans_date_trans_time": "2020-08-07 06:07:15",
+    "cc_num": 6595970453799027,
+    "merchant": "fraud_Parisian and Sons",
+    "category": "gas_transport",
+    "amt": 18.5,
+    "first": "Gina",
+    "last": "Gomez",
+    "gender": "F",
+    "street": "72030 Shelton Crossing Apt. 742",
+    "city": "Stirling",
+    "state": "NJ",
+    "zip": 7980,
+    "lat": 40.6774,
+    "long": -74.4968,
+    "city_pop": 2307,
+    "job": "Science writer",
+    "dob": "1969-09-11",
+    "trans_num": "e6cbba31353032b7e7bc9f69b6a59cb8",
+    "unix_time": 1375855635,
+    "merch_lat": 40.586809,
+    "merch_long": -74.576538,
+    "is_fraud": 1
+  }
+]

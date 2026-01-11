@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 227777,
+    "trans_date_trans_time": "2020-09-10 23:09:48",
+    "cc_num": 4358137750029944984,
+    "merchant": "fraud_Schumm PLC",
+    "category": "shopping_net",
+    "amt": 9.23,
+    "first": "Dawn",
+    "last": "Stephens",
+    "gender": "F",
+    "street": "91542 Marissa Shores Apt. 053",
+    "city": "Oran",
+    "state": "IA",
+    "zip": 50664,
+    "lat": 42.7012,
+    "long": -92.0762,
+    "city_pop": 53,
+    "job": "Sports administrator",
+    "dob": "1972-10-05",
+    "trans_num": "8df14f9b923f6b1878789f148bf6e527",
+    "unix_time": 1378854588,
+    "merch_lat": 42.95063,
+    "merch_long": -92.017569,
+    "is_fraud": 0
+  }
+]

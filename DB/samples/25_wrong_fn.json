@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 473378,
+    "trans_date_trans_time": "2020-12-13 23:47:56",
+    "cc_num": 4607072969078276,
+    "merchant": "fraud_Adams-Barrows",
+    "category": "health_fitness",
+    "amt": 19.86,
+    "first": "Brenda",
+    "last": "Perez",
+    "gender": "F",
+    "street": "033 Tara Brook Suite 523",
+    "city": "Coyle",
+    "state": "OK",
+    "zip": 73027,
+    "lat": 35.8985,
+    "long": -97.2607,
+    "city_pop": 1493,
+    "job": "Amenity horticulturist",
+    "dob": "1985-03-21",
+    "trans_num": "a0d54aedbccbe91ce09b6250ee188b68",
+    "unix_time": 1386978476,
+    "merch_lat": 35.953568,
+    "merch_long": -97.58238,
+    "is_fraud": 1
+  }
+]

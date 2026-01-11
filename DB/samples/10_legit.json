@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 279823,
+    "trans_date_trans_time": "2020-10-04 01:12:55",
+    "cc_num": 4613314721966,
+    "merchant": "fraud_Block-Parisian",
+    "category": "misc_net",
+    "amt": 130.65,
+    "first": "Jason",
+    "last": "Murphy",
+    "gender": "M",
+    "street": "542 Steve Curve Suite 011",
+    "city": "Collettsville",
+    "state": "NC",
+    "zip": 28611,
+    "lat": 35.9946,
+    "long": -81.7266,
+    "city_pop": 885,
+    "job": "Soil scientist",
+    "dob": "1988-09-15",
+    "trans_num": "f9a98c01f15fac36b69efabc84477a75",
+    "unix_time": 1380849175,
+    "merch_lat": 35.145148,
+    "merch_long": -80.828828,
+    "is_fraud": 0
+  }
+]

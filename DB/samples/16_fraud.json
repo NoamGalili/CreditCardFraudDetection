@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 269898,
+    "trans_date_trans_time": "2020-09-29 02:24:38",
+    "cc_num": 6011477612335392,
+    "merchant": "fraud_Lockman, West and Runte",
+    "category": "grocery_pos",
+    "amt": 305.73,
+    "first": "Anthony",
+    "last": "Roberts",
+    "gender": "M",
+    "street": "95488 Cabrera Well",
+    "city": "Maria Stein",
+    "state": "OH",
+    "zip": 45860,
+    "lat": 40.4062,
+    "long": -84.5076,
+    "city_pop": 2274,
+    "job": "Designer, television/film set",
+    "dob": "1943-12-17",
+    "trans_num": "d4cc63209b690ea3e9d722332cb22e6f",
+    "unix_time": 1380421478,
+    "merch_lat": 40.168305,
+    "merch_long": -85.273576,
+    "is_fraud": 1
+  }
+]

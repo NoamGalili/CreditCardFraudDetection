@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 419046,
+    "trans_date_trans_time": "2020-12-01 13:31:55",
+    "cc_num": 4512828414983801773,
+    "merchant": "fraud_Streich, Dietrich and Barton",
+    "category": "shopping_net",
+    "amt": 9.53,
+    "first": "Monica",
+    "last": "Cohen",
+    "gender": "F",
+    "street": "864 Reynolds Plains",
+    "city": "Uledi",
+    "state": "PA",
+    "zip": 15484,
+    "lat": 39.8936,
+    "long": -79.7856,
+    "city_pop": 328,
+    "job": "Tree surgeon",
+    "dob": "1983-07-25",
+    "trans_num": "b53be1f040b6a96aa63612ad0f04b675",
+    "unix_time": 1385904715,
+    "merch_lat": 40.491719,
+    "merch_long": -79.211474,
+    "is_fraud": 0
+  }
+]

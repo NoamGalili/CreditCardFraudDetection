@@ -1,0 +1,27 @@
+[
+  {
+    "Unnamed: 0": 550735,
+    "trans_date_trans_time": "2020-12-30 13:28:43",
+    "cc_num": 374656033243756,
+    "merchant": "fraud_Gerlach Inc",
+    "category": "shopping_net",
+    "amt": 3.25,
+    "first": "David",
+    "last": "Lewis",
+    "gender": "M",
+    "street": "1499 Michael Rue",
+    "city": "Arlington",
+    "state": "VA",
+    "zip": 22213,
+    "lat": 38.8954,
+    "long": -77.1633,
+    "city_pop": 207410,
+    "job": "Mudlogger",
+    "dob": "1984-07-03",
+    "trans_num": "72c728d00833c8e82f0c7cecb4122643",
+    "unix_time": 1388410123,
+    "merch_lat": 39.79593,
+    "merch_long": -77.938084,
+    "is_fraud": 0
+  }
+]

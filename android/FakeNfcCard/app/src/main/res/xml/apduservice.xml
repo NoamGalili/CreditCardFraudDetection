@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Declares the custom AID that this HCE service handles.
+
+    AID: F0 01 02 03 04 05 06  (7 bytes, starts with F0 = proprietary/non-standard range)
+
+    The terminal sends a SELECT AID APDU with this exact AID.
+    Android routes that APDU to this service automatically.
+
+    category="other" avoids triggering the payment category conflict-resolution UI.
+    requireDeviceUnlock="false" means the card works even on lockscreen (demo only).
+-->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/app_name"
+    android:requireDeviceUnlock="false">
+
+    <aid-group
+        android:category="other"
+        android:description="@string/app_name">
+
+        <aid-filter android:name="FakeDemoCard" android:value="F0010203040506" />
+
+    </aid-group>
+
+</host-apdu-service>

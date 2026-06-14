@@ -1,0 +1,29 @@
+{
+    "saved_at": "2026-06-12T08:15:57.697976",
+    "label_names": [
+        "Legitimate",
+        "Fraud"
+    ],
+    "meta_features": [
+        "rf_prob",
+        "lgbm_prob",
+        "cat_prob",
+        "xgb_prob",
+        "nn_prob"
+    ],
+    "default_threshold": 0.5,
+    "production_threshold": 0.9990673180660194,
+    "models": {
+        "random_forest": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/random_forest.joblib",
+        "lightgbm": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/lightgbm.joblib",
+        "catboost": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/catboost.cbm",
+        "xgboost": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/xgboost.json",
+        "neural_network": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/best_nn.keras",
+        "meta_model": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/models/stacking_meta_model.joblib"
+    },
+    "preprocessing": {
+        "preprocessing_artifacts": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/preprocessing/preprocessing_artifacts.joblib",
+        "neural_network_scaler": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/preprocessing/neural_network_scaler.joblib",
+        "feature_columns": "/content/drive/MyDrive/Fraud_Detection_Project/Fraud_Detection_stacking/fraud_detection_oof_stacking_ensemble/backend_ready/feature_columns.json"
+    }
+}

@@ -1,9 +1,148 @@
+# =============================================================================
+# CreditCardFraudDetection – root .gitignore
+# =============================================================================
+
+# --- macOS / Windows ---
 .DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Editors & IDEs ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# --- Environment & secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Node / Frontend ---
 node_modules/
 dist/
 build/
+out/
+.vite/
+.cache/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+logs/
 
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+*.egg
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+.installed.cfg
+*.manifest
+*.spec
 
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+
+# --- ML model artifacts (too large for Git / GitHub) ---
+# GitHub hard limit: 100 MB per file. random_forest.joblib alone is ~120 MB.
+*.joblib
+*.cbm
+*.keras
+*.h5
+*.hdf5
 *.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+*.weights
 
-models/saved models/random_forest.joblib
+# Boosting model exports (JSON dumps, typically 1–3 MB each)
+**/models/xgboost.json
+**/models/xgboost_model.json
+**/saved models/
+
+# Stacking pipeline – ignore all model/preprocessing artifacts by default
+Fraud_Detection OFF Stacking/models/*
+Fraud_Detection OFF Stacking/preprocessing/*
+
+# --- Production artifacts (required in Git) ---
+!Fraud_Detection OFF Stacking/models/random_forest.joblib
+!Fraud_Detection OFF Stacking/models/lightgbm.joblib
+!Fraud_Detection OFF Stacking/models/catboost.cbm
+!Fraud_Detection OFF Stacking/models/xgboost.json
+!Fraud_Detection OFF Stacking/models/best_nn.keras
+!Fraud_Detection OFF Stacking/models/stacking_meta_model.joblib
+!Fraud_Detection OFF Stacking/preprocessing/preprocessing_artifacts.joblib
+!Fraud_Detection OFF Stacking/preprocessing/neural_network_scaler.joblib
+!Fraud_Detection OFF Stacking/backend_ready/production_manifest.json
+
+# Legacy path (models moved to Research/)
+models/saved models/
+
+# --- Large generated datasets & predictions ---
+Fraud_Detection OFF Stacking/oof_predictions/
+Fraud_Detection OFF Stacking/predictions/
+
+# Raw / processed datasets (add specific filenames as needed)
+**/data/raw/
+**/data/processed/
+**/datasets/
+creditcard.csv
+*.parquet
+*.feather
+*.arrow
+
+# --- Regeneratable notebook outputs (figures, plots) ---
+Fraud_Detection OFF Stacking/figures/
+
+# --- Misc backups & temp ---
+*.save
+*.bak
+*.tmp
+*.temp
+/test-output/
+*.pid
+*.seed
+*.tgz
+
+# =============================================================================
+# Also tracked (not ignored):
+#   Fraud_Detection OFF Stacking/backend_ready/feature_columns.json
+#   Fraud_Detection OFF Stacking/reports/
+#   Fraud_Detection OFF Stacking/NoteBooks/
+#   Research/models/*.ipynb
+#   front/
+# =============================================================================
+
+# Frontend-specific ignores (root .gitignore covers shared rules)
+node_modules/
+dist/
+build/
+.env
+.env.*.local
+.DS_Store

@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 253870,
-    "trans_date_trans_time": "2020-09-22 01:44:46",
-    "cc_num": 30143713661454,
-    "merchant": "fraud_Rau and Sons",
-    "category": "grocery_pos",
-    "amt": 111.85,
-    "first": "Nicholas",
-    "last": "Thornton",
-    "gender": "M",
-    "street": "5270 Megan Burg Suite 756",
-    "city": "Halma",
-    "state": "MN",
-    "zip": 56729,
-    "lat": 48.6669,
-    "long": -96.5969,
-    "city_pop": 140,
-    "job": "Embryologist, clinical",
-    "dob": "1942-01-06",
-    "trans_num": "102c2b99a76bc4960f29c036028e772a",
-    "unix_time": 1379814286,
-    "merch_lat": 49.665488,
-    "merch_long": -97.298122,
-    "is_fraud": 0
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:a54294cbf982d09fdc878ea165b83026dea9617adcb925b996d0490f6d93027a
+size 659

@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 240702,
-    "trans_date_trans_time": "2020-09-15 22:50:35",
-    "cc_num": 375974680629816,
-    "merchant": "fraud_Erdman-Schaden",
-    "category": "personal_care",
-    "amt": 17.4,
-    "first": "Roberta",
-    "last": "Mccarthy",
-    "gender": "F",
-    "street": "94431 Matthew Mall Suite 296",
-    "city": "Plymouth",
-    "state": "CT",
-    "zip": 6782,
-    "lat": 41.6611,
-    "long": -73.0449,
-    "city_pop": 2376,
-    "job": "Herpetologist",
-    "dob": "1973-04-06",
-    "trans_num": "f303183ad86bf4ffb7c38d6977005f5f",
-    "unix_time": 1379285435,
-    "merch_lat": 41.320593,
-    "merch_long": -73.70055699999999,
-    "is_fraud": 0
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:877add5c1a344c4fc8638bc85cc8a78ca0d936080e950738d0ce1c9b73242ac0
+size 666

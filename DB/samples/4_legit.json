@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 262720,
-    "trans_date_trans_time": "2020-09-26 13:51:58",
-    "cc_num": 3551217896304745,
-    "merchant": "fraud_Kling-Ernser",
-    "category": "entertainment",
-    "amt": 44.45,
-    "first": "Sara",
-    "last": "Harris",
-    "gender": "F",
-    "street": "597 Jenny Ford Apt. 543",
-    "city": "Tupper Lake",
-    "state": "NY",
-    "zip": 12986,
-    "lat": 44.232,
-    "long": -74.4905,
-    "city_pop": 6120,
-    "job": "Chartered loss adjuster",
-    "dob": "1976-10-09",
-    "trans_num": "b3b47db51b57afbe96ce7101e0bfa6d1",
-    "unix_time": 1380203518,
-    "merch_lat": 43.959224,
-    "merch_long": -75.274293,
-    "is_fraud": 0
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:4c2ced21b4c327fb3e056d952a666af415f409b32a78a3b3deaa9493dbc4313d
+size 661

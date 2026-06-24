@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 2026,
-    "trans_date_trans_time": "2020-06-21 23:59:05",
-    "cc_num": 6564459919350820,
-    "merchant": "fraud_Lemke-Gutmann",
-    "category": "shopping_net",
-    "amt": 955.16,
-    "first": "Douglas",
-    "last": "Willis",
-    "gender": "M",
-    "street": "619 Jeremy Garden Apt. 681",
-    "city": "Benton",
-    "state": "WI",
-    "zip": 53803,
-    "lat": 42.5545,
-    "long": -90.3508,
-    "city_pop": 1306,
-    "job": "Public relations officer",
-    "dob": "1958-09-10",
-    "trans_num": "1799ffe421a2a05dc87903e379140f55",
-    "unix_time": 1371859145,
-    "merch_lat": 43.027879,
-    "merch_long": -90.493768,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:cd58b28235cb152f46b16592add5e08f8a8fc0854877af0254036289848f9bd2
+size 663

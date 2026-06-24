@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 438561,
-    "trans_date_trans_time": "2020-12-06 13:10:58",
-    "cc_num": 4412720572684931,
-    "merchant": "fraud_Shields-Wunsch",
-    "category": "health_fitness",
-    "amt": 17.45,
-    "first": "Richard",
-    "last": "Marshall",
-    "gender": "M",
-    "street": "295 Page Creek Suite 181",
-    "city": "Greenbush",
-    "state": "VA",
-    "zip": 23357,
-    "lat": 37.7681,
-    "long": -75.6664,
-    "city_pop": 776,
-    "job": "Psychiatrist",
-    "dob": "1949-11-17",
-    "trans_num": "70f630f6773ecd448049934fc66b8206",
-    "unix_time": 1386335458,
-    "merch_lat": 38.586695,
-    "merch_long": -74.728661,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:8c9f2c9afecc1055d5dd83fb96559c0f600737a871d62117f7eed3f7e36ac4fc
+size 657

@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 239974,
-    "trans_date_trans_time": "2020-09-15 17:57:51",
-    "cc_num": 6011109736646996,
-    "merchant": "fraud_Mosciski, Ziemann and Farrell",
-    "category": "shopping_net",
-    "amt": 9.47,
-    "first": "Rebecca",
-    "last": "Erickson",
-    "gender": "F",
-    "street": "594 Berry Lights Apt. 392",
-    "city": "Wilmington",
-    "state": "NC",
-    "zip": 28405,
-    "lat": 34.2651,
-    "long": -77.867,
-    "city_pop": 186140,
-    "job": "English as a second language teacher",
-    "dob": "1983-02-08",
-    "trans_num": "8e769fbb44797088d38c8f131c873dcd",
-    "unix_time": 1379267871,
-    "merch_lat": 33.398856,
-    "merch_long": -77.639158,
-    "is_fraud": 0
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:eb7de106ea1e25b02233874927117dd5d325e2c2de618c8b80ca1358f2f12bf1
+size 697

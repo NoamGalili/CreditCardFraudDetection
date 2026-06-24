@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 441283,
-    "trans_date_trans_time": "2020-12-06 23:12:24",
-    "cc_num": 4292743669224718067,
-    "merchant": "fraud_Predovic Inc",
-    "category": "shopping_net",
-    "amt": 986.43,
-    "first": "Michael",
-    "last": "Williams",
-    "gender": "M",
-    "street": "35822 Clayton Street Apt. 679",
-    "city": "Great Mills",
-    "state": "MD",
-    "zip": 20634,
-    "lat": 38.2674,
-    "long": -76.4954,
-    "city_pop": 5927,
-    "job": "Art therapist",
-    "dob": "1973-06-09",
-    "trans_num": "a9605942c1c72383eae209d343b2ca5b",
-    "unix_time": 1386371544,
-    "merch_lat": 38.355806,
-    "merch_long": -75.585197,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:cf14befcc13000d3d0692d697c943e14dec0d76cd38783b292d160fb885b00c1
+size 666

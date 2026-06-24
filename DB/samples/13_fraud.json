@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 183979,
-    "trans_date_trans_time": "2020-08-24 19:06:58",
-    "cc_num": 3501365119557234,
-    "merchant": "fraud_Nader-Heller",
-    "category": "misc_net",
-    "amt": 802.1,
-    "first": "Danielle",
-    "last": "Allen",
-    "gender": "F",
-    "street": "87198 Macias Drive Suite 389",
-    "city": "Loving",
-    "state": "NM",
-    "zip": 88256,
-    "lat": 32.274,
-    "long": -104.0914,
-    "city_pop": 1925,
-    "job": "Educational psychologist",
-    "dob": "1952-05-26",
-    "trans_num": "fc43c3cb576830881d207deb10b8c15c",
-    "unix_time": 1377371218,
-    "merch_lat": 31.790515000000003,
-    "merch_long": -104.507956,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:10844e9f64a0c32472af4b0cdb6d6810b2ea04fec381cb189a8fae743afc4cc0
+size 671

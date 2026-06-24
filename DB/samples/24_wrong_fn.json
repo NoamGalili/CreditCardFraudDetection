@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 31806,
-    "trans_date_trans_time": "2020-07-01 22:51:21",
-    "cc_num": 6011893664860915,
-    "merchant": "fraud_Zulauf LLC",
-    "category": "personal_care",
-    "amt": 17.71,
-    "first": "Erin",
-    "last": "Chavez",
-    "gender": "F",
-    "street": "3379 Williams Common",
-    "city": "Littleton",
-    "state": "CO",
-    "zip": 80120,
-    "lat": 39.5994,
-    "long": -105.0044,
-    "city_pop": 320420,
-    "job": "Water engineer",
-    "dob": "1975-07-31",
-    "trans_num": "b39c397e0b3c1732fc4826c73709a86f",
-    "unix_time": 1372719081,
-    "merch_lat": 39.640502000000005,
-    "merch_long": -104.816614,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:4bdd993c308ef7d243cdf948335d8ff89192ed318e80de762bd0e9b8f7bf546a
+size 658

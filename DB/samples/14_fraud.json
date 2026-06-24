@@ -1,27 +1,3 @@
-[
-  {
-    "Unnamed: 0": 370372,
-    "trans_date_trans_time": "2020-11-12 03:12:05",
-    "cc_num": 3535808924394848,
-    "merchant": "fraud_Lockman, West and Runte",
-    "category": "grocery_pos",
-    "amt": 316.91,
-    "first": "Matthew",
-    "last": "Myers",
-    "gender": "M",
-    "street": "4936 Michelle Points",
-    "city": "Tower Hill",
-    "state": "IL",
-    "zip": 62571,
-    "lat": 39.39,
-    "long": -88.9597,
-    "city_pop": 1532,
-    "job": "Radio broadcast assistant",
-    "dob": "1980-01-09",
-    "trans_num": "f71e59484c5d0e950b6949e71ac1a263",
-    "unix_time": 1384225925,
-    "merch_lat": 39.547804,
-    "merch_long": -89.639211,
-    "is_fraud": 1
-  }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:049eba1f2af2d68e6d8edad5f2aaed6697bd7a70ea4ae1eca3770c3448676bae
+size 670

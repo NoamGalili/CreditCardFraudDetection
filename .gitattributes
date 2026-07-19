@@ -2,3 +2,7 @@
 *.keras filter=lfs diff=lfs merge=lfs -text
 *.cbm filter=lfs diff=lfs merge=lfs -text
 *.json filter=lfs diff=lfs merge=lfs -text
+
+# Keep small frontend config JSON as normal text (override the global *.json LFS rule)
+frontend/**/*.json !filter !diff !merge text
+.env.example text

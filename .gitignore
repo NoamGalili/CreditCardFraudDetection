@@ -1,9 +1,16 @@
 # Environment & secrets
 .env
 
+# Local git worktrees (branch inspection)
+.worktrees/
+
 # Virtual environment
 server/.venv/
 server/venv/
+
+# Node / frontend build tooling (built output in server/static IS committed)
+frontend/node_modules/
+frontend/dist/
 
 # Logs
 server/logs/

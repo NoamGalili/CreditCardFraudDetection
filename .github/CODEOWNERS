@@ -1,0 +1,4 @@
+# Only @NoamGalili is a code owner of everything.
+# Combined with the branch rule "Require review from Code Owners",
+# this means a PR into a protected branch needs Noam's approval to merge.
+* @NoamGalili

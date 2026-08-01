@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import {
   ShieldAlert, ShieldCheck, Upload, Send, Loader2, Zap, CheckCircle2,
-  XCircle, Radar, BellRing, BellOff,
+  XCircle, Radar, BellRing, BellOff, AlertTriangle, ListChecks,
 } from 'lucide-react';
 import { cls, money } from '../utils/format';
 
@@ -36,6 +36,58 @@ function ScoreBar({ label, value, color }) {
       <span>{label}</span>
       <div className="scoreTrack"><div className="scoreFill" style={{ width: `${Math.min(value * 100, 100)}%`, background: color }} /></div>
       <b>{(value * 100).toFixed(2)}%</b>
+    </div>
+  );
+}
+
+// Per-model + final-decision reasoning. A model "identifies fraud" when its
+// own probability crosses the model threshold (default 50%). The final block
+// aggregates reasons from ONLY the models that flagged fraud.
+function Explanations({ exp, isFraud }) {
+  const anyFlagged = exp.models.some((m) => m.flagged_fraud);
+  if (!isFraud && !anyFlagged) return null;
+
+  return (
+    <div className="reasons">
+      {isFraud && exp.final.reasons.length > 0 && (
+        <div className="reasonBlock final">
+          <p className="reasonHead"><AlertTriangle size={14} /> Why this was flagged as fraud</p>
+          {exp.final.note && <small className="reasonNote">{exp.final.note}</small>}
+          {exp.final.reasons.map((g) => (
+            <div className="finalModel" key={g.model}>
+              <span className="finalModelName">{g.model}</span>
+              <ul className="reasonList">
+                {g.reasons.length
+                  ? g.reasons.map((r, i) => <li key={i}>{r}</li>)
+                  : <li className="muted">No dominant risk feature isolated.</li>}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="reasonBlock">
+        <p className="reasonHead"><ListChecks size={14} /> Per-model assessment</p>
+        {exp.models.map((m) => (
+          <div className={cls('modelRow', m.flagged_fraud ? 'flagged' : 'clear')} key={m.key}>
+            <div className="modelRowTop">
+              <span className="modelName">{m.name}</span>
+              <span className={cls('miniTag', m.flagged_fraud ? 'fraud' : 'legit')}>
+                {m.flagged_fraud ? 'flagged fraud' : 'no fraud'} · {(m.probability * 100).toFixed(1)}%
+              </span>
+            </div>
+            {m.flagged_fraud && m.reasons.length > 0 && (
+              <ul className="reasonList">
+                {m.reasons.map((r, i) => (
+                  <li key={i}>
+                    <b>{r.label}</b>{r.value !== undefined && r.value !== null && <em> ({String(r.value)})</em>} — {r.reason}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -194,6 +246,8 @@ export default function LiveDetection() {
                 <ScoreBar label="XGBoost" value={result.base_models.xgboost} color="#10b981" />
                 <ScoreBar label="Stacking (final)" value={result.probability} color={isFraud ? '#ef4444' : '#22c55e'} />
               </div>
+
+              {result.explanations && <Explanations exp={result.explanations} isFraud={isFraud} />}
 
               <div className="resFoot">
                 <span>Inference {result.inference_ms} ms</span>

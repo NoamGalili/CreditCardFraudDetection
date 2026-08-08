@@ -47,6 +47,27 @@
 .scoreRow b{font-size:12px;text-align:right;color:#0f172a}
 .scoreTrack{height:8px;border-radius:999px;background:#eef2f7;overflow:hidden}
 .scoreFill{height:100%;border-radius:999px}
+/* --- Decision reasoning ------------------------------------------------ */
+.reasons{display:flex;flex-direction:column;gap:14px}
+.reasonBlock{display:flex;flex-direction:column;gap:10px}
+.reasonBlock.final{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px}
+.reasonHead{display:flex;align-items:center;gap:7px;margin:0;font-size:12px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.4px}
+.reasonBlock.final .reasonHead{color:#c2410c}
+.reasonNote{color:#b45309;font-size:12px;font-weight:600;line-height:1.4}
+.finalModel{display:flex;flex-direction:column;gap:4px}
+.finalModelName{font-size:12px;font-weight:800;color:#9a3412}
+.reasonList{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.reasonList li{font-size:13px;color:#334155;line-height:1.45}
+.reasonList li em{font-style:normal;color:#64748b;font-weight:600}
+.reasonList li.muted{color:#94a3b8}
+.modelRow{border:1px solid #eef2f7;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.modelRow.flagged{border-color:#fecaca;background:#fef2f2}
+.modelRow.clear{background:#f8fafc}
+.modelRowTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.modelName{font-size:13px;font-weight:800;color:#0f172a}
+.miniTag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.miniTag.fraud{background:#fee2e2;color:#b91c1c}
+.miniTag.legit{background:#e2e8f0;color:#475569}
 .resFoot{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#64748b;font-weight:600;border-top:1px solid #eef2f7;padding-top:12px}
 .tgSent{display:inline-flex;align-items:center;gap:5px}
 .tgSent.ok{color:#166534}

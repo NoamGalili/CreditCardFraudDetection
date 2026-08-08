@@ -18,6 +18,8 @@ warnings.filterwarnings("ignore")
 from catboost import CatBoostClassifier
 from xgboost import XGBClassifier
 
+from explain import build_explanations
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -135,6 +137,12 @@ class FraudEnsemble:
         inference_ms = round((time.time() - t0) * 1000, 2)
 
         is_fraud = int(stacking_prob >= self.threshold)
+        base_probs = {
+            "random_forest": rf_prob,
+            "catboost": cat_prob,
+            "xgboost": xgb_prob,
+        }
+        explanations = build_explanations(self, X, raw, base_probs, is_fraud)
         return {
             "probability": round(stacking_prob, 6),
             "threshold": self.threshold,
@@ -145,6 +153,7 @@ class FraudEnsemble:
                 "catboost": round(cat_prob, 6),
                 "xgboost": round(xgb_prob, 6),
             },
+            "explanations": explanations,
             "inference_ms": inference_ms,
         }
 

@@ -3,6 +3,7 @@ import { ShieldCheck, LayoutDashboard, BellRing, Network, LineChart, Globe2, Rad
 import { cls } from '../utils/format';
 
 export default function Shell({ nav, page, setPage, children }) {
+  const isCommand = page === 'command';
   return (
     <div className="app" dir="ltr">
       <aside className="sidebar">
@@ -26,12 +27,13 @@ export default function Shell({ nav, page, setPage, children }) {
         </div>
       </aside>
       <main className="main">
-        <Topbar />
-        <div className="content">{children}</div>
+        {!isCommand && <Topbar />}
+        <div className={cls('content', isCommand && 'commandContent')}>{children}</div>
       </main>
     </div>
   );
 }
+
 
 function Topbar() {
   return (

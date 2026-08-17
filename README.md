@@ -22,6 +22,7 @@ a React dashboard, and Telegram fraud alerts.
 
 ```powershell
 cd server
+pip install -r requirements.txt
 python run_server.py
 ```
 

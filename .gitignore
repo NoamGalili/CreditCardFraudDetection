@@ -1,0 +1,39 @@
+# Environment & secrets
+.env
+
+# Local git worktrees (branch inspection)
+.worktrees/
+
+# Virtual environment
+server/.venv/
+server/venv/
+
+# Node / frontend build tooling (built output in server/static IS committed)
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+server/logs/
+
+# Large datasets (too big for git)
+DB/fraudTest.csv
+DB/fraudTrain.csv
+
+# Model backup
+ModelAndNotebookData/fraud_detection_model.keras.bak
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Dependency hash marker
+server/.deps_installed

@@ -132,10 +132,10 @@ Card → Terminal
 
 ```json
 {
-  "card_id":    "CARD_DEMO_A3F7C1",
-  "user_id":    "USER_DEMO_A3F7C1",
-  "card_type":  "demo",
-  "nonce":      "550e8400-e29b-41d4-a716-446655440000",
+  "card_id": "CARD_DEMO_A3F7C1",
+  "user_id": "USER_DEMO_A3F7C1",
+  "card_type": "demo",
+  "nonce": "550e8400-e29b-41d4-a716-446655440000",
   "created_at": "2026-06-10T12:00:00.000Z"
 }
 ```
@@ -195,13 +195,13 @@ Content-Type: application/json
 
 ```json
 {
-  "card_id":   "CARD_DEMO_A3F7C1",
-  "merchant":  "Demo Store",
-  "category":  "shopping",
-  "amount":    250.00,
-  "city":      "Tel Aviv",
-  "lat":       32.0853,
-  "long":      34.7818,
+  "card_id": "CARD_DEMO_A3F7C1",
+  "merchant": "Demo Store",
+  "category": "shopping",
+  "amount": 250.0,
+  "city": "Tel Aviv",
+  "lat": 32.0853,
+  "long": 34.7818,
   "timestamp": "2026-06-10T12:00:00.000Z"
 }
 ```
@@ -210,11 +210,11 @@ Content-Type: application/json
 
 ```json
 {
-  "status":         "ok",
+  "status": "ok",
   "transaction_id": "TXN_0042",
-  "fraud_score":    0.0312,
-  "is_fraud":       false,
-  "message":        "Approved"
+  "fraud_score": 0.0312,
+  "is_fraud": false,
+  "message": "Approved"
 }
 ```
 
@@ -225,24 +225,24 @@ Content-Type: application/json
 
 ## Device Requirements
 
-| Requirement | Card App | Terminal App |
-|---|---|---|
-| NFC hardware | Required | Required |
-| HCE support | **Required** (`android.hardware.nfc.hce`) | Not needed |
-| Android version | API 26+ (Android 8.0) | API 26+ |
-| Screen on during tap | Required (HCE only works with screen on) | Required |
-| Internet | Not needed | Required |
+| Requirement          | Card App                                  | Terminal App |
+| -------------------- | ----------------------------------------- | ------------ |
+| NFC hardware         | Required                                  | Required     |
+| HCE support          | **Required** (`android.hardware.nfc.hce`) | Not needed   |
+| Android version      | API 26+ (Android 8.0)                     | API 26+      |
+| Screen on during tap | Required (HCE only works with screen on)  | Required     |
+| Internet             | Not needed                                | Required     |
 
 ---
 
 ## Backend URL Quick Reference
 
-| Scenario | BASE_URL |
-|---|---|
-| Android Emulator | `http://10.0.2.2:5000/` |
-| Physical device, same LAN | `http://192.168.x.x:5000/` |
-| ngrok tunnel | `https://xxxx.ngrok.io/` |
-| Production HTTPS | `https://your-domain.com/api/` |
+| Scenario                  | BASE_URL                       |
+| ------------------------- | ------------------------------ |
+| Android Emulator          | `http://10.0.2.2:5000/`        |
+| Physical device, same LAN | `http://192.168.x.x:5000/`     |
+| ngrok tunnel              | `https://xxxx.ngrok.io/`       |
+| Production HTTPS          | `https://your-domain.com/api/` |
 
 ---
 
@@ -282,15 +282,15 @@ Content-Type: application/json
 
 ## Security Notes (Simulation Only)
 
-| Topic | This Project | Real Payment System |
-|---|---|---|
-| AID | Proprietary F0xxxxxx | Registered ISO AID |
-| Protocol | Custom 2-command | EMV (complex multi-step) |
-| Cryptography | None | Elliptic-curve, session keys |
-| Card auth | None | Dynamic CVV, ARQC |
-| Replay protection | Nonce (informational only) | Cryptographic counter |
-| Network | HTTP (dev only) | TLS 1.3 minimum |
-| Data at rest | SharedPreferences (plaintext) | Hardware-backed keystore |
+| Topic             | This Project                  | Real Payment System          |
+| ----------------- | ----------------------------- | ---------------------------- |
+| AID               | Proprietary F0xxxxxx          | Registered ISO AID           |
+| Protocol          | Custom 2-command              | EMV (complex multi-step)     |
+| Cryptography      | None                          | Elliptic-curve, session keys |
+| Card auth         | None                          | Dynamic CVV, ARQC            |
+| Replay protection | Nonce (informational only)    | Cryptographic counter        |
+| Network           | HTTP (dev only)               | TLS 1.3 minimum              |
+| Data at rest      | SharedPreferences (plaintext) | Hardware-backed keystore     |
 
 This simulation is intentionally minimal. The nonce in the payload is
 generated fresh on each tap as a teaching aid — it is not cryptographically
@@ -302,13 +302,13 @@ verified by the terminal in this demo build.
 
 ## Tech Stack Summary
 
-| Layer | Technology |
-|---|---|
-| Language | Kotlin |
-| UI | Jetpack Compose + Material 3 |
-| ViewModel | AndroidX ViewModel + StateFlow |
-| NFC (card side) | Android Host Card Emulation (HCE) |
+| Layer             | Technology                               |
+| ----------------- | ---------------------------------------- |
+| Language          | Kotlin                                   |
+| UI                | Jetpack Compose + Material 3             |
+| ViewModel         | AndroidX ViewModel + StateFlow           |
+| NFC (card side)   | Android Host Card Emulation (HCE)        |
 | NFC (reader side) | `NfcAdapter.enableReaderMode` + `IsoDep` |
-| HTTP client | Retrofit 2 + OkHttp 4 |
-| JSON | Gson |
-| Min SDK | API 26 (Android 8.0) |
+| HTTP client       | Retrofit 2 + OkHttp 4                    |
+| JSON              | Gson                                     |
+| Min SDK           | API 26 (Android 8.0)                     |

@@ -1,10 +1,20 @@
 package com.demo.nfcterminal.data
 
-/** Response envelope from the existing backend. */
-data class TransactionResponse(
-    val status: String,
+/**
+ * Response from POST /api/dashboard/inject — the feed entry the server
+ * created for this tap. "prediction" is 1 for fraud, 0 for legitimate.
+ */
+data class InjectResponse(
+    val sequence: Int? = null,
+    val source: String? = null,
     val transaction_id: String? = null,
-    val fraud_score: Double? = null,
-    val is_fraud: Boolean? = null,
-    val message: String? = null
-)
+    val prediction: Int? = null,
+    val probability: Double? = null,
+    val threshold: Double? = null,
+    val base_models: Map<String, Double>? = null,
+    val inference_ms: Double? = null,
+    val ground_truth: Int? = null,
+    val error: String? = null,
+) {
+    val isFraud: Boolean get() = prediction == 1
+}

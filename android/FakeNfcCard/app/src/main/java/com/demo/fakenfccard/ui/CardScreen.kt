@@ -1,44 +1,70 @@
 package com.demo.fakenfccard.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
+// Wallet palette (light, Google-Pay-like)
+private val WalletBg = Color(0xFFFFFFFF)
+private val WalletSurface = Color(0xFFF3F4F7)
+private val WalletText = Color(0xFF1B1F27)
+private val WalletDim = Color(0xFF6B7280)
+private val WalletLine = Color(0xFFE3E6EC)
+private val CardTop = Color(0xFF2B50E0)
+private val CardBottom = Color(0xFF152a73)
+private val Ready = Color(0xFF1E8E3E)
 
 @Composable
 fun CardScreen(viewModel: CardViewModel) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "NFC Demo Card",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
+    Surface(color = WalletBg, modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            WalletHeader()
 
-        if (state.card != null) {
-            CardVisual(state)
-            NfcToggleRow(state.isNfcEnabled, viewModel::toggleNfc)
-            ActionButtons(
-                onNewCard = viewModel::openDialog,
-                onDelete  = viewModel::deleteCard
-            )
-        } else {
-            EmptyState(onGenerate = viewModel::openDialog)
+            if (state.card != null) {
+                CardArt(state)
+                if (state.isNfcEnabled) ReadyToTapPill()
+                RecentActivity()
+                Spacer(Modifier.weight(1f))
+                ContactlessToggle(state.isNfcEnabled, viewModel::toggleNfc)
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(
+                        onClick = viewModel::openDialog,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(24.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, WalletLine)
+                    ) { Text("Details", color = WalletText) }
+                    OutlinedButton(
+                        onClick = viewModel::deleteCard,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(24.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, WalletLine)
+                    ) { Text("Remove", color = Color(0xFFB3261E)) }
+                }
+            } else {
+                EmptyState(onGenerate = viewModel::openDialog)
+            }
         }
     }
 
@@ -53,118 +79,154 @@ fun CardScreen(viewModel: CardViewModel) {
 }
 
 @Composable
-private fun CardVisual(state: CardUiState) {
-    val card = state.card ?: return
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+private fun WalletHeader() {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+        Box(
+            modifier = Modifier.size(24.dp).clip(RoundedCornerShape(7.dp))
+                .background(Brush.linearGradient(listOf(CardTop, Color(0xFF00A15C)))),
+            contentAlignment = Alignment.Center
+        ) { Text("P", color = Color.White, fontWeight = FontWeight.Black, fontSize = 14.sp) }
+        Spacer(Modifier.width(8.dp))
+        Text("Pay", color = WalletText, fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+@Composable
+private fun CardArt(state: CardUiState) {
+    val card = state.card ?: return
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(Brush.linearGradient(listOf(CardTop, CardBottom)))
+            .padding(22.dp)
+    ) {
+        // Brand + "not real" tag
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("FraudGuard", color = Color.White, fontWeight = FontWeight.Black,
+                style = MaterialTheme.typography.titleLarge)
+            Text("SIMULATION — NOT A REAL CARD", color = Color(0xFFB9C6FF),
+                fontSize = 9.sp, fontWeight = FontWeight.SemiBold)
+        }
+
+        Text("business debit", color = Color(0xFFC7D2FF), fontSize = 12.sp,
+            modifier = Modifier.align(Alignment.CenterEnd).padding(top = 4.dp))
+
+        // Bottom: masked number + holder + network mark
+        Row(
+            modifier = Modifier.align(Alignment.BottomStart).fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = "SIMULATION CARD — NOT REAL",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = card.holderName,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = card.cardId,
-                style = MaterialTheme.typography.bodyLarge,
-                fontFamily = FontFamily.Monospace
-            )
-            Text(
-                text = card.userId,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-            )
-            Divider(modifier = Modifier.padding(vertical = 6.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Type: ${card.cardType}", style = MaterialTheme.typography.bodySmall)
-                val nfcColor = if (state.isNfcEnabled) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error
-                Text(
-                    text = if (state.isNfcEnabled) "NFC ACTIVE" else "NFC OFF",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = nfcColor
-                )
+            Column {
+                Text("•••• ${card.ccNum.takeLast(4)}", color = Color.White,
+                    fontFamily = FontFamily.Monospace, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                Spacer(Modifier.height(4.dp))
+                Text(card.holderName.uppercase(), color = Color(0xFFDBE3FF),
+                    fontSize = 12.sp, letterSpacing = 1.sp)
             }
+            NetworkMark()
         }
     }
 }
 
 @Composable
-private fun NfcToggleRow(enabled: Boolean, onToggle: (Boolean) -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+private fun NetworkMark() {
+    Box(modifier = Modifier.width(46.dp).height(30.dp)) {
+        Box(Modifier.size(28.dp).clip(CircleShape).background(Color(0xFFEB001B))
+            .align(Alignment.CenterStart))
+        Box(Modifier.size(28.dp).clip(CircleShape).background(Color(0xE6F79E1B))
+            .align(Alignment.CenterEnd))
+    }
+}
+
+@Composable
+private fun ReadyToTapPill() {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFFE6F4EA))
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(Modifier.size(8.dp).clip(CircleShape).background(Ready))
+        Text("Ready to tap · hold near the reader", color = Color(0xFF14612A),
+            style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
+    }
+}
+
+@Composable
+private fun RecentActivity() {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Recent activity", color = WalletDim, style = MaterialTheme.typography.labelMedium)
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
-                Text(
-                    text = "NFC Card Mode",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = if (enabled) "Card will respond to terminal taps"
-                           else "Card is inactive — tap to enable",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Box(Modifier.size(38.dp).clip(CircleShape).background(WalletSurface),
+                    contentAlignment = Alignment.Center) {
+                    Text("☕", fontSize = 18.sp)
+                }
+                Column {
+                    Text("Vivus Cafe", color = WalletText, fontWeight = FontWeight.SemiBold)
+                    Text("Tuesday", color = WalletDim, style = MaterialTheme.typography.bodySmall)
+                }
             }
-            Switch(checked = enabled, onCheckedChange = onToggle)
+            Text("$25.98", color = WalletText, fontWeight = FontWeight.SemiBold)
         }
     }
 }
 
 @Composable
-private fun ActionButtons(onNewCard: () -> Unit, onDelete: () -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        OutlinedButton(
-            onClick = onNewCard,
-            modifier = Modifier.weight(1f)
-        ) { Text("New Card") }
-
-        Button(
-            onClick = onDelete,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
-            modifier = Modifier.weight(1f)
-        ) { Text("Delete Card") }
+private fun ContactlessToggle(enabled: Boolean, onToggle: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .background(WalletSurface)
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text("Contactless payments", color = WalletText, fontWeight = FontWeight.Medium)
+            Text(
+                if (enabled) "This phone responds to terminal taps"
+                else "Turn on to pay by tapping",
+                color = WalletDim, style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Switch(checked = enabled, onCheckedChange = onToggle)
     }
 }
 
 @Composable
 private fun EmptyState(onGenerate: () -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 48.dp),
+        modifier = Modifier.fillMaxSize().padding(vertical = 48.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Text("No card configured", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(40.dp))
+        Text("No card yet", color = WalletText, style = MaterialTheme.typography.titleMedium)
         Text(
-            text = "Generate a simulated card to begin.\nThis is for demo purposes only.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
+            "Add a simulated card to pay by tapping.\nFor demo purposes only.",
+            color = WalletDim, textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium
         )
-        Button(onClick = onGenerate) { Text("Generate Demo Card") }
+        Button(onClick = onGenerate, shape = RoundedCornerShape(24.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = CardTop)) {
+            Text("Add a card")
+        }
     }
 }
 
@@ -177,23 +239,19 @@ private fun NewCardDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("New Demo Card") },
+        title = { Text("New demo card") },
         text = {
             OutlinedTextField(
                 value = nameValue,
                 onValueChange = onNameChange,
-                label = { Text("Cardholder Name") },
-                placeholder = { Text("e.g. Alice Demo") },
+                label = { Text("Cardholder name") },
+                placeholder = { Text("e.g. Alex Morgan") },
                 singleLine = true
             )
         },
         confirmButton = {
-            TextButton(onClick = onConfirm, enabled = nameValue.isNotBlank()) {
-                Text("Generate")
-            }
+            TextButton(onClick = onConfirm, enabled = nameValue.isNotBlank()) { Text("Add") }
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
-        }
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
     )
 }

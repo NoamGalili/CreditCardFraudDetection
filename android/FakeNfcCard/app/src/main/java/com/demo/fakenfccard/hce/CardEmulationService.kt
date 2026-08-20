@@ -121,7 +121,19 @@ class CardEmulationService : HostApduService() {
             user_id    = card.userId,
             card_type  = card.cardType,
             nonce      = UUID.randomUUID().toString(),
-            created_at = java.time.Instant.now().toString()
+            created_at = java.time.Instant.now().toString(),
+            first      = card.firstName,
+            last       = card.lastName,
+            cc_num     = card.ccNum,
+            gender     = card.gender,
+            dob        = card.dob,
+            job        = card.job,
+            city       = card.city,
+            state      = card.state,
+            zip        = card.zip,
+            city_pop   = card.cityPop,
+            lat        = card.homeLat,
+            long       = card.homeLong,
         )
 
         val jsonBytes = gson.toJson(payload).toByteArray(Charsets.UTF_8)

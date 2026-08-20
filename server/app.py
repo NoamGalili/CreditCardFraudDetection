@@ -301,6 +301,65 @@ def dashboard_reset():
     return jsonify(dashboard_simulator.get_status())
 
 
+@app.route("/api/dashboard/inject", methods=["POST"])
+def dashboard_inject():
+    """
+    Scores ONE externally-supplied transaction (e.g. an NFC tap from the
+    terminal app) and injects it into the live Command Center feed.
+
+    Body: a JSON object with the model's REQUIRED_FIELDS. Optional "is_fraud"
+    is treated as ground truth (the demo card sends 1). Extra keys such as
+    first/last/cc_num/city/state/zip are ignored by the model but flow through
+    to the feed so the row renders like a real transaction.
+    """
+    try:
+        raw = request.get_json(force=True)
+    except Exception:
+        return jsonify({"error": "Invalid JSON body"}), 400
+
+    if isinstance(raw, list):
+        raw = raw[0]
+    if not isinstance(raw, dict):
+        return jsonify({"error": "Expected a JSON object"}), 400
+
+    missing = [f for f in REQUIRED_FIELDS if f not in raw]
+    if missing:
+        return jsonify({"error": f"Missing fields: {missing}"}), 400
+
+    ground_truth = raw.get("is_fraud", None)
+
+    try:
+        entry = dashboard_simulator.inject_transaction(
+            raw, ground_truth=ground_truth, source="nfc"
+        )
+    except Exception as exc:
+        logger.exception("Injected-transaction handling failed")
+        return jsonify({"error": f"Inject failed: {exc}"}), 500
+
+    # Fire a Telegram alert on fraud, mirroring /api/predict. Never let it
+    # break the response the terminal is waiting on.
+    if entry.get("prediction") == 1:
+        try:
+            telegram_notify.send_fraud_alert(
+                raw,
+                {
+                    "probability": entry["probability"],
+                    "threshold": entry["threshold"],
+                    "is_fraud": 1,
+                    "base_models": entry.get("base_models", {}),
+                },
+            )
+        except Exception:
+            logger.exception("Telegram alert failed for injected transaction")
+
+    logger.info(
+        "NFC inject: seq=%s prob=%.4f fraud=%d time=%.1fms",
+        entry.get("sequence"), entry["probability"],
+        entry["prediction"], entry["inference_ms"],
+    )
+    return jsonify(entry)
+
+
 # Serve built SPA assets (Vite emits /assets/*). Fallback to index.html for routes.
 @app.route("/<path:path>")
 def static_proxy(path):

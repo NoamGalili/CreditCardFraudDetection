@@ -9,12 +9,13 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
 
     /**
-     * Change BASE_URL to match your backend:
-     *   - Android Emulator → "http://10.0.2.2:5000/"   (maps to host localhost)
-     *   - Physical device  → "http://<your-PC-LAN-IP>:5000/"
-     *   - Production       → "https://your-domain.com/api/"
+     * The Flask server runs on port 8080 (see server/run_server.py).
+     * Change BASE_URL to match how the phone reaches it:
+     *   - Android Emulator → "http://10.0.2.2:8080/"   (10.0.2.2 = host localhost)
+     *   - Physical device  → "http://<your-PC-LAN-IP>:8080/"  (same Wi-Fi)
+     *   - Production        → "https://your-domain.com/"
      */
-    private const val BASE_URL = "http://10.0.2.2:5000/"
+    private const val BASE_URL = "http://10.0.2.2:8080/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

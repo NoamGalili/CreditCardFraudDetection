@@ -13,12 +13,12 @@
 │   FakeNfcCard App   │ ───────────────────▶  │   NfcTerminal App   │
 │   (HCE service)     │     APDU over ISO-DEP │   (NFC reader mode) │
 └─────────────────────┘                       └──────────┬──────────┘
-                                                         │ POST /transactions
+                                                         │ POST /api/dashboard/inject
                                                          ▼
                                               ┌─────────────────────┐
-                                              │   Existing Backend   │
+                                              │  Flask Server :8080  │
                                               │   + ML Fraud Model  │
-                                              │   + Dashboard        │
+                                              │   + Command Center   │
                                               └─────────────────────┘
 ```
 
@@ -136,9 +136,17 @@ Card → Terminal
   "user_id": "USER_DEMO_A3F7C1",
   "card_type": "demo",
   "nonce": "550e8400-e29b-41d4-a716-446655440000",
-  "created_at": "2026-06-10T12:00:00.000Z"
+  "created_at": "2026-06-10T12:00:00.000Z",
+  "first": "Alex", "last": "Morgan", "cc_num": "4539821004567890",
+  "gender": "M", "dob": "1988-03-11", "job": "Systems analyst",
+  "city": "New York", "state": "NY", "zip": "10001",
+  "city_pop": 8400000, "lat": 40.7128, "long": -74.0060
 }
 ```
+
+The card now carries the cardholder attributes the fraud model consumes
+(gender, dob, job, home lat/long, city population) plus display fields, so the
+terminal can assemble a complete transaction from a single tap.
 
 ---
 
@@ -159,26 +167,38 @@ Card → Terminal
 1. Create a new Android project in Android Studio named **NfcTerminal**.
 2. Copy / replace the generated files with the files in `android/NfcTerminal/`.
 3. In `RetrofitClient.kt`, set `BASE_URL`:
-   - Emulator → `http://10.0.2.2:5000/`
-   - Physical device on same Wi-Fi → `http://<your-PC-LAN-IP>:5000/`
+   - Emulator → `http://10.0.2.2:8080/`
+   - Physical device on same Wi-Fi → `http://<your-PC-LAN-IP>:8080/`
 4. Build and install on **Device B** (must have NFC).
 5. Make sure your existing backend is running.
 
 ### Phase 3 — Demo Flow
 
 ```
-1. Start backend (existing Flask/FastAPI server).
+1. Start the Flask server:  cd server && python run_server.py   (serves :8080)
 2. Open FakeNfcCard on Device A, generate a card, enable NFC mode.
-3. Open NfcTerminal on Device B — screen shows "Hold a demo card near the device".
-4. Tap Device A (back) to Device B (back).
-5. Terminal reads card → shows card ID.
-6. Operator fills in: Merchant, Category, Amount, City, Lat/Lon.
-7. Tap "Submit Transaction".
-8. Terminal sends POST /transactions to backend.
-9. Backend runs fraud detection model.
-10. Terminal shows APPROVED or FRAUD ALERT with fraud score.
-11. Dashboard updates.
+3. Open NfcTerminal on Device B.
+4. Tap Device A (back) to Device B (back)  — OR tap "Simulate Tap (Demo)".
+5. Terminal reads the card → shows the cardholder + last 4 digits.
+6. Operator confirms: Merchant, Category, Amount, Merchant lat/long
+   (pre-filled with the demo "risky" purchase).
+7. Tap "Charge Card".
+8. Terminal sends POST /api/dashboard/inject to the server.
+9. The real stacking ensemble scores the transaction.
+10. Terminal shows the Google-Pay-style ✓ (Payment Approved) AND the bank's
+    verdict: FRAUD DETECTED or LEGITIMATE, with the model's fraud score.
+11. The transaction appears live in the FraudGuard Command Center feed
+    (tagged source: "nfc"), and a Telegram alert fires on fraud.
 ```
+
+### Making the demo flag fraud (honest, no override)
+
+The model is real, so the flag is earned by the *inputs*, not forced. The demo
+defaults describe a genuinely suspicious purchase — a New York cardholder, a
+merchant ~3,900 km away (Los Angeles), a **$1,287 online** purchase — which the
+ensemble scores **~0.90–0.99** (threshold 0.69). For a green **LEGITIMATE**
+result instead, tap and charge a small local purchase (e.g. `grocery_pos`,
+`$24.90`, merchant lat/long near the card's home) → scores ~0.02.
 
 ---
 
@@ -187,39 +207,69 @@ Card → Terminal
 ### Endpoint Called
 
 ```
-POST /transactions
+POST /api/dashboard/inject
 Content-Type: application/json
 ```
+
+This endpoint (added in `server/app.py`) scores one externally-supplied
+transaction with the real ensemble and pushes it into the same live feed the
+Command Center reads. The first 12 fields are the model's `REQUIRED_FIELDS`
+(see `server/ensemble.py`); the rest are display-only.
 
 ### Request Body
 
 ```json
 {
-  "card_id": "CARD_DEMO_A3F7C1",
-  "merchant": "Demo Store",
-  "category": "shopping",
-  "amount": 250.0,
-  "city": "Tel Aviv",
-  "lat": 32.0853,
-  "long": 34.7818,
-  "timestamp": "2026-06-10T12:00:00.000Z"
+  "trans_date_trans_time": "2026-08-17 14:30:00",
+  "merchant": "fraud_Kozey-Boehm",
+  "category": "shopping_net",
+  "amt": 1287.55,
+  "gender": "M",
+  "lat": 40.7128,
+  "long": -74.0060,
+  "city_pop": 8400000,
+  "job": "Systems analyst",
+  "dob": "1988-03-11",
+  "merch_lat": 33.9,
+  "merch_long": -118.2,
+  "first": "Alex", "last": "Morgan", "cc_num": "4539821004567890",
+  "city": "New York", "state": "NY", "zip": "10001",
+  "trans_num": "NFC_1723900000000"
 }
 ```
 
-### Expected Response
+### Response (the feed entry)
 
 ```json
 {
-  "status": "ok",
-  "transaction_id": "TXN_0042",
-  "fraud_score": 0.0312,
-  "is_fraud": false,
-  "message": "Approved"
+  "sequence": 12,
+  "source": "nfc",
+  "transaction_id": "NFC_1723900000000",
+  "prediction": 1,
+  "probability": 0.9175,
+  "threshold": 0.69,
+  "base_models": { "random_forest": 0.19, "catboost": 0.95, "xgboost": 0.93 },
+  "inference_ms": 131.2,
+  "ground_truth": 1
 }
 ```
 
-> The `TransactionResponse` data class accepts all fields as nullable so it
-> works regardless of which fields your backend actually returns.
+> `prediction` is `1` for fraud, `0` for legitimate. Optional `is_fraud` in the
+> request is treated as ground truth; when omitted the server defaults it to the
+> prediction so an unlabeled tap never distorts the accuracy metric.
+
+### Test it on your computer (no NFC hardware)
+
+```bash
+cd server && python run_server.py          # serves http://localhost:8080
+# in another shell, fire a demo tap:
+curl -X POST http://localhost:8080/api/dashboard/inject \
+     -H "Content-Type: application/json" -d @demo_tap.json
+```
+
+Then open the FraudGuard **Command Center** — the tap appears as the top row.
+The Android **NfcTerminal** app has a **Simulate Tap (Demo)** button that does
+exactly this from the emulator, so the whole flow is demoable without two phones.
 
 ---
 
@@ -239,8 +289,8 @@ Content-Type: application/json
 
 | Scenario                  | BASE_URL                       |
 | ------------------------- | ------------------------------ |
-| Android Emulator          | `http://10.0.2.2:5000/`        |
-| Physical device, same LAN | `http://192.168.x.x:5000/`     |
+| Android Emulator          | `http://10.0.2.2:8080/`        |
+| Physical device, same LAN | `http://192.168.x.x:8080/`     |
 | ngrok tunnel              | `https://xxxx.ngrok.io/`       |
 | Production HTTPS          | `https://your-domain.com/api/` |
 

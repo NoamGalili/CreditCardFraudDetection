@@ -1,22 +1,18 @@
 # CreditCardFraudDetection
 
-A credit-card fraud detection system with a stacking ensemble model, a Flask API,
-a React dashboard, and Telegram fraud alerts.
+FraudGuard is an end-to-end credit card fraud detection and real-time response system. It combines a high-precision AI core powered by a Stacking Ensemble model, a fast Flask API for real-time decision-making, an interactive React monitoring dashboard, and an immediate emergency notification mechanism via Telegram.
 
 ## Architecture
 
-- **Model** — a stacking ensemble (`Backend_Package/Selected_Stack`): three base
-  models (Random Forest, CatBoost, XGBoost) each output a fraud probability, and a
-  meta-model combines those three probabilities into the final score. A transaction
-  is flagged as fraud when the stacking probability is at or above the tuned
-  threshold (`0.69`).
+- **Model** — A high-precision Stacking Ensemble (`Backend_Package/Selected_Stack`) combining three 
+  base models (Random Forest, CatBoost, and XGBoost). Each base model generates an independent risk probability, which a meta-model aggregates into a final confidence score. Transactions meeting or exceeding the optimized threshold (`0.69`) are flagged as fraud.
 - **Backend** — `server/app.py` (Flask) loads the ensemble and exposes a small JSON
   API. On every fraud verdict it sends a Telegram alert.
 - **Frontend** — `frontend/` (React + Vite) is the FraudGuard dashboard. The
   **Live Detection** page scores real transactions against the backend. The built
   output is committed to `server/static/`, so running the server needs only Python.
-- **Notifications** — `server/telegram_notify.py` sends a message through the
-  Telegram Bot API whenever a fraud is detected.
+- **Notifications** — Managed by `server/telegram_notify.py`, which dispatches real-time security alerts via the Telegram Bot API whenever high-risk activity is detected.
+
 
 ## Run the server
 

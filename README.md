@@ -18,6 +18,7 @@ FraudGuard is an end-to-end credit card fraud detection and real-time response s
 
 ```powershell
 cd server
+pip install -r requirements.txt
 python run_server.py
 ```
 

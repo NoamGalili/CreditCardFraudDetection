@@ -39,6 +39,7 @@ _load_dotenv(os.path.join(PROJECT_DIR, ".env"))
 
 from ensemble import FraudEnsemble, REQUIRED_FIELDS  # noqa: E402
 import telegram_notify  # noqa: E402
+from dashboard_simulator import TransactionSimulator  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -62,7 +63,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Load ensemble
+# Load ensemble & Initialize simulator
 # ---------------------------------------------------------------------------
 logger.info("Loading Selected-Stack ensemble ...")
 ensemble = FraudEnsemble()
@@ -74,10 +75,14 @@ logger.info("Telegram notifications: %s",
 MODEL_METADATA = ensemble.metadata()
 _inference_log: list[dict] = []
 
+logger.info("Initializing dashboard transaction simulator (initially stopped) ...")
+dashboard_simulator = TransactionSimulator(ensemble=ensemble)
+
 # ---------------------------------------------------------------------------
 # Flask app
 # ---------------------------------------------------------------------------
 app = Flask(__name__, static_folder=STATIC_DIR)
+
 
 
 @app.route("/")
@@ -240,9 +245,66 @@ def telegram_test():
     return jsonify(res), status
 
 
+# ---------------------------------------------------------------------------
+# Dashboard Simulator API Endpoints
+# ---------------------------------------------------------------------------
+
+@app.route("/api/dashboard/status", methods=["GET"])
+def dashboard_status():
+    return jsonify(dashboard_simulator.get_status())
+
+
+@app.route("/api/dashboard/transactions", methods=["GET"])
+def dashboard_transactions():
+    limit = request.args.get("limit", 50, type=int)
+    return jsonify(dashboard_simulator.get_transactions(limit=limit))
+
+
+@app.route("/api/dashboard/summary", methods=["GET"])
+def dashboard_summary():
+    return jsonify(dashboard_simulator.get_summary())
+
+
+@app.route("/api/dashboard/daily", methods=["GET"])
+def dashboard_daily():
+    return jsonify(dashboard_simulator.get_daily_summary())
+
+
+
+@app.route("/api/dashboard/next", methods=["POST"])
+def dashboard_next():
+    try:
+        entry = dashboard_simulator.process_next()
+        return jsonify(entry)
+    except Exception as exc:
+        logger.exception("Error processing next dashboard transaction")
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/dashboard/start", methods=["POST"])
+def dashboard_start():
+    data = request.get_json(silent=True) or {}
+    interval = data.get("interval_seconds") or request.args.get("interval", type=float)
+    dashboard_simulator.start(interval_seconds=interval)
+    return jsonify(dashboard_simulator.get_status())
+
+
+@app.route("/api/dashboard/stop", methods=["POST"])
+def dashboard_stop():
+    dashboard_simulator.stop()
+    return jsonify(dashboard_simulator.get_status())
+
+
+@app.route("/api/dashboard/reset", methods=["POST"])
+def dashboard_reset():
+    dashboard_simulator.reset()
+    return jsonify(dashboard_simulator.get_status())
+
+
 # Serve built SPA assets (Vite emits /assets/*). Fallback to index.html for routes.
 @app.route("/<path:path>")
 def static_proxy(path):
+
     full = os.path.join(STATIC_DIR, path)
     if os.path.isfile(full):
         return send_from_directory(STATIC_DIR, path)

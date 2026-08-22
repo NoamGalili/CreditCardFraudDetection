@@ -339,6 +339,118 @@ class TransactionSimulator:
 
         return entry
 
+    def inject_transaction(
+        self,
+        tx: Dict[str, Any],
+        ground_truth: Optional[int] = None,
+        source: str = "nfc",
+    ) -> Dict[str, Any]:
+        """
+        Scores ONE externally-supplied transaction (e.g. an NFC tap from the
+        terminal app) and pushes it into the same live feed the Command Center
+        reads, updating all session/daily accumulators exactly like process_next.
+
+        Differs from process_next only in that the transaction comes from the
+        caller instead of the Kaggle pool:
+          - dataset_index is -1 (not from the pool)
+          - entry["source"] = source (so the UI can badge live taps)
+          - ground_truth is optional; when None it defaults to the prediction
+            so an unlabeled live tap never distorts the accuracy metric.
+        """
+        err_msg = None
+        result = None
+        start_t = time.perf_counter()
+        now_dt = datetime.now()
+        now_date_str = now_dt.strftime("%Y-%m-%d")
+        now_hour_str = now_dt.strftime("%H")
+
+        try:
+            result = self.ensemble.predict(tx)
+        except Exception as exc:
+            err_msg = str(exc)
+            logger.exception("Injected-transaction prediction failed")
+            elapsed_ms = round((time.perf_counter() - start_t) * 1000, 2)
+            result = {
+                "probability": 0.0,
+                "threshold": getattr(self.ensemble, "threshold", 0.5),
+                "is_fraud": 0,
+                "base_models": {},
+                "inference_ms": elapsed_ms,
+            }
+
+        is_fraud_pred = int(result["is_fraud"])
+        gt = is_fraud_pred if ground_truth is None else int(ground_truth)
+
+        with self._lock:
+            self.sequence += 1
+            self.processed_count += 1
+            seq = self.sequence
+            explanations = result.get("explanations") if is_fraud_pred == 1 else None
+
+            amt_val = float(tx.get("amt", 0.0))
+            prob_val = float(result["probability"])
+            inf_ms = float(result.get("inference_ms", 0.0))
+
+            self.cum_total += 1
+            if is_fraud_pred == 1:
+                self.cum_fraud_preds += 1
+                self.cum_flagged_fraud_volume += amt_val
+            else:
+                self.cum_legit_preds += 1
+
+            if gt == 1:
+                self.cum_gt_fraud += 1
+            if is_fraud_pred == gt:
+                self.cum_correct += 1
+
+            self.cum_total_volume += amt_val
+            self.cum_sum_prob += prob_val
+            self.cum_sum_inference_ms += inf_ms
+
+            self._ensure_daily_buckets(now_date_str)
+            self.daily_total_transactions += 1
+            self.daily_total_volume += amt_val
+            self.daily_sum_probability += prob_val
+            self.daily_sum_inference_ms += inf_ms
+
+            if is_fraud_pred == 1:
+                self.daily_fraud_predictions += 1
+                self.daily_flagged_fraud_volume += amt_val
+            else:
+                self.daily_legit_predictions += 1
+
+            hour_b = self.daily_hourly_buckets[now_hour_str]
+            hour_b["total_transactions"] += 1
+            hour_b["total_volume"] += amt_val
+            hour_b["sum_probability"] += prob_val
+            hour_b["sum_inference_ms"] += inf_ms
+            if is_fraud_pred == 1:
+                hour_b["fraud_predictions"] += 1
+                hour_b["flagged_fraud_volume"] += amt_val
+            else:
+                hour_b["legit_predictions"] += 1
+
+            entry = {
+                "sequence": seq,
+                "dataset_index": -1,
+                "source": source,
+                "processed_at": datetime.utcnow().isoformat() + "Z",
+                "transaction_id": str(tx.get("trans_num", f"nfc_{seq}")),
+                "transaction": tx,
+                "ground_truth": gt,
+                "prediction": is_fraud_pred,
+                "probability": float(result["probability"]),
+                "threshold": float(result["threshold"]),
+                "base_models": result.get("base_models", {}),
+                "explanations": explanations,
+                "inference_ms": float(result.get("inference_ms", 0.0)),
+                "error": err_msg,
+            }
+
+            self.processed_history.append(entry)
+
+        return entry
+
     def start(self, interval_seconds: Optional[float] = None) -> bool:
         """
         Starts automatic transaction simulation worker loop.

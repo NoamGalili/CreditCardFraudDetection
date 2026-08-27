@@ -10,7 +10,7 @@ import Shell from './layout/Shell';
 const nav = [
   ['detect', 'Live Detection', Zap],
   ['overview', 'Overview', LayoutDashboard],
-  ['services', 'Services', Network],
+  ['services', 'Services(DEMO)', Network],
   ['analytics', 'Analytics', LineChart],
   ['geo', 'Geo Risk', Globe2],
   ['command', 'Command Center', Radar]
